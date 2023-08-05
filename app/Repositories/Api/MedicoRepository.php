@@ -32,9 +32,10 @@ class MedicoRepository extends CrudRepository
         $patientId = $attributes['paciente_id'];
 
         $doctor = $this->resourceType::find($doctorId);
-        $patient = $doctor->patients()->find($patientId);
 
         $doctor->patients()->syncWithoutDetaching([$patientId]);
+
+        $patient = $doctor->patients()->find($patientId);
 
         return collect([
             'patient' => $patient,
