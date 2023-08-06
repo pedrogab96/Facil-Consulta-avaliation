@@ -1,8 +1,8 @@
-# Getting Started: Facil Consulta Avaliation
+# Getting Started: Facil Consulta Avaliação
 
 ## Sobre
 
-Facil Consulta Avaliation é uma avaliação de processo seletivo para a vaga de Desenvolvedor Back-end na [Facil Consulta](https://facilconsulta.com.br/).
+Facil Consulta Avaliação é processo seletivo para a vaga de Desenvolvedor Back-end na [Facil Consulta](https://facilconsulta.com.br/).
 
 ## Tecnologias e versões utilizadas
 
@@ -11,7 +11,7 @@ Facil Consulta Avaliation é uma avaliação de processo seletivo para a vaga de
 PHP                           | 8.2
 Laravel                       | 10
 MySQL                         | 8.0
-
+Swagger                       | 3.0
 
 ## Como executar
 
@@ -87,3 +87,8 @@ Após executar os comandos acima, serão criados dados para cada tabela e dois u
 - Usuário 2:
   - Email: pedrogab96@gmail.com
   - Senha: pedro@dev
+
+## Documentação da API
+A documentação da API foi criada utilizando o Swagger (OpenAPI) e pode ser acessada através da rota http://localhost/api/documentation após o servidor estar em execução.
+
+Na documentação, você encontrará informações detalhadas sobre todos os endpoints da API, incluindo os métodos HTTP, parâmetros de entrada, respostas e exemplos de uso.

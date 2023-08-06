@@ -1,0 +1,524 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Facil Consulta API
+  description: Facil Consulta Api é processo seletivo para a vaga de Desenvolvedor Back-end na [Facil Consulta](https://facilconsulta.com.br/).
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: pedrogab96@gmail.com
+servers:
+  - description: Local
+    url: http://localhost/api
+paths:
+  /cidades:
+    get:
+      tags:
+        - cidades
+      summary: Obter lista de cidades
+      description: Retorna uma lista de cidades com seus IDs, nomes e estados.
+      responses:
+        '200':
+          description: Sucesso. Retorna a lista de cidades.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cidade'
+  /medicos:
+    get:
+      summary: Obter lista de médicos
+      description: Retorna uma lista de médicos com seus IDs, nomes, especialidades e IDs de cidade.
+      responses:
+        '200':
+          description: Sucesso. Retorna a lista de médicos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaMedicos'
+      tags:
+        - medicos
+    post:
+      security:
+        - BearerToken: []
+      summary: Criar um novo médico
+      description: Cria um novo médico com as informações fornecidas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequisicaoMedico'
+      responses:
+        '201':
+          description: Médico criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicoCriado'
+        '401':
+          description: Não autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAutenticacao'
+      tags:
+        - medicos
+  /cidades/{cidade_id}/medicos:
+    get:
+      summary: Obter lista de médicos por cidade
+      description: Retorna uma lista de médicos com seus IDs, nomes, especialidades e IDs de cidade para uma cidade específica.
+      parameters:
+        - in: path
+          name: cidade_id
+          required: true
+          schema:
+            type: integer
+          description: ID da cidade para filtrar médicos.
+      responses:
+        '200':
+          description: Sucesso. Retorna a lista de médicos para a cidade específica.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaMedicos'
+      tags:
+        - medicos
+  /medicos/{medico_id}/pacientes:
+    post:
+      security:
+        - BearerToken: []
+      summary: Adicionar paciente ao médico
+      description: Adiciona um paciente ao médico especificado.
+      parameters:
+        - in: path
+          name: medico_id
+          required: true
+          schema:
+            type: integer
+          description: ID do médico ao qual o paciente será adicionado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdicionarRequisicaoDePaciente'
+      responses:
+        '200':
+          description: Sucesso. Retorna o médico e o paciente adicionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespostaAdicionarPacienteMedico'
+        '401':
+          description: Não autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAutenticacao'
+      tags:
+        - medicos
+
+  /medicos/{id_medico}/pacientes:
+    get:
+      summary: Listar pacientes do médico
+      description: Retorna a lista de pacientes associados a um médico específico com base no ID do médico.
+      security:
+        - BearerToken: []
+      parameters:
+        - in: path
+          name: id_medico
+          required: true
+          schema:
+            type: integer
+          description: ID do médico para filtrar os pacientes associados.
+      responses:
+        '200':
+          description: Sucesso. Retorna a lista de pacientes associados ao médico.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Paciente'
+      tags:
+        - pacientes
+
+  /pacientes/{id_paciente}:
+    put:
+      summary: Atualizar paciente
+      description: Atualiza os dados de um paciente com base no ID fornecido.
+      security:
+        - BearerToken: []
+      parameters:
+        - in: path
+          name: id_paciente
+          required: true
+          schema:
+            type: integer
+          description: ID do paciente a ser atualizado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PacienteAtualizado'
+      responses:
+        '200':
+          description: Sucesso. Retorna os dados atualizados do paciente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paciente'
+      tags:
+        - pacientes
+
+  /pacientes:
+    post:
+      summary: Criar um novo paciente
+      description: Cria um novo paciente com as informações fornecidas.
+      security:
+        - BearerToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequisicaoPaciente'
+      responses:
+        '201':
+          description: Paciente criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paciente'
+      tags:
+        - pacientes
+  /user:
+    get:
+      summary: Obter dados do usuário
+      description: Retorna os dados do usuário logado.
+      security:
+        - BearerToken: []
+      responses:
+        '200':
+          description: Sucesso. Retorna os dados do usuário logado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+      tags:
+        - autenticacao
+  /login:
+    post:
+      summary: Realizar login
+      description: Realiza o login do usuário com as credenciais fornecidas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredenciaisAutenticacao'
+      responses:
+        '200':
+          description: Sucesso. Retorna o token de acesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenAcesso'
+      tags:
+        - autenticacao
+
+components:
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Cidade:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da cidade.
+        nome:
+          type: string
+          description: Nome da cidade.
+        estado:
+          type: string
+          description: Estado da cidade.
+        created_at:
+          type: string
+          format: date-time
+          description: Data de criação da cidade.
+        updated_at:
+          type: string
+          format: date-time
+          description: Data da última atualização da cidade.
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Data da exclusão da cidade, se removida.
+
+    Paciente:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do paciente.
+          example: 1
+        nome:
+          type: string
+          description: Nome do paciente.
+          example: "Luana Rodrigues"
+        cpf:
+          type: string
+          description: CPF do paciente.
+          example: "662.669.840-08"
+        celular:
+          type: string
+          description: Número de celular do paciente.
+          example: "(11) 98484-6363"
+        created_at:
+          type: string
+          format: date-time
+          description: Data de criação do paciente.
+          example: "2023-07-06 09:36:28"
+        updated_at:
+          type: string
+          format: date-time
+          description: Data da última atualização do paciente.
+          example: "2023-07-06 09:36:28"
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Data da exclusão do paciente, se removido.
+          example: null
+
+    Medico:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do médico.
+          example: 8
+        nome:
+          type: string
+          description: Nome do médico.
+          example: "Dra. Alessandra Moura"
+        especialidade:
+          type: string
+          description: Especialidade do médico.
+          example: "Neurologista"
+        cidade_id:
+          type: integer
+          description: ID da cidade do médico.
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          description: Data de criação do médico.
+        updated_at:
+          type: string
+          format: date-time
+          description: Data da última atualização do médico.
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Data da exclusão do médico, se removido.
+
+    ListaMedicos:
+      type: array
+      items:
+        $ref: '#/components/schemas/ItemListaMedicos'
+
+    ItemListaMedicos:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do médico.
+          example: 8
+        nome:
+          type: string
+          description: Nome do médico.
+          example: "Dra. Alessandra Moura"
+        especialidade:
+          type: string
+          description: Especialidade do médico.
+          example: "Neurologista"
+        cidade_id:
+          type: integer
+          description: ID da cidade do médico.
+          example: 1
+
+    RequisicaoMedico:
+      type: object
+      required:
+        - nome
+        - especialidade
+        - cidade_id
+      properties:
+        nome:
+          type: string
+          description: Nome do médico.
+          example: "Dra. Alessandra Moura"
+        especialidade:
+          type: string
+          description: Especialidade do médico.
+          example: "Neurologista"
+        cidade_id:
+          type: integer
+          description: ID da cidade do médico.
+          example: 1
+
+    MedicoCriado:
+      allOf:
+        - $ref: '#/components/schemas/Medico'
+        - type: object
+          properties:
+            created_at:
+              type: string
+              format: date-time
+              description: Data de criação do médico.
+            updated_at:
+              type: string
+              format: date-time
+              description: Data da última atualização do médico.
+            deleted_at:
+              type: string
+              format: date-time
+              nullable: true
+              description: Data da exclusão do médico, se removido.
+
+    AdicionarRequisicaoDePaciente:
+      type: object
+      required:
+        - medico_id
+        - paciente_id
+      properties:
+        medico_id:
+          type: integer
+          description: ID do médico ao qual o paciente será adicionado.
+          example: 8
+        paciente_id:
+          type: integer
+          description: ID do paciente a ser adicionado ao médico.
+          example: 1
+
+    RespostaAdicionarPacienteMedico:
+      type: object
+      properties:
+        medico:
+          $ref: '#/components/schemas/Medico'
+        paciente:
+          $ref: '#/components/schemas/Paciente'
+
+    RequisicaoPaciente:
+      type: object
+      required:
+        - nome
+        - cpf
+        - celular
+      properties:
+        nome:
+          type: string
+          description: Nome do paciente.
+          example: "Luana Rodrigues"
+        cpf:
+          type: string
+          description: CPF do paciente.
+          example: "662.669.840-08"
+        celular:
+          type: string
+          description: Número de celular do paciente.
+          example: "(11) 98484-6363"
+
+    PacienteAtualizado:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Novo nome do paciente.
+          example: "Luana Rodrigues Garcia"
+        cpf:
+          type: string
+          description: Novo CPF do paciente.
+          example: "662.669.840-08"
+        celular:
+          type: string
+          description: Novo número de celular do paciente.
+          example: "(11) 98484-6362"
+
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do usuário.
+          example: 2
+        name:
+          type: string
+          description: Nome do usuário.
+          example: "Pedro Gabriel"
+        email:
+          type: string
+          description: E-mail do usuário.
+          example: "pedrogab96@gmail.com"
+        email_verified_at:
+          type: string
+          format: date-time
+          description: Data de verificação do e-mail do usuário.
+          example: "2023-08-06T01:57:00.000000Z"
+        created_at:
+          type: string
+          format: date-time
+          description: Data de criação do usuário.
+          example: "2023-08-06T01:57:00.000000Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Data da última atualização do usuário.
+          example: "2023-08-06T01:57:00.000000Z"
+
+    CredenciaisAutenticacao:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          description: E-mail do usuário.
+          example: "christian.ramires@example.com"
+        password:
+          type: string
+          description: Senha do usuário.
+          example: "password"
+
+    TokenAcesso:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Token de acesso gerado após o login.
+          example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+        token_type:
+          type: string
+          description: Tipo de token.
+          example: "bearer"
+        expires_in:
+          type: integer
+          description: Tempo de expiração do token em segundos.
+          example: 3600
+
+    ErrorAutenticacao:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Mensagem de erro.
+          example: "Unauthenticated."
+
