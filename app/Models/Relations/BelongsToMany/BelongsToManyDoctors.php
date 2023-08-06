@@ -14,6 +14,6 @@ trait BelongsToManyDoctors
      */
     public function doctors(): BelongsToMany
     {
-        return $this->belongsToMany(Doctor::class, 'medico_paciente', 'medico_id', 'paciente_id')->withTimestamps();
+        return $this->belongsToMany(Doctor::class, 'medico_paciente', 'paciente_id', 'medico_id')->withTimestamps();
     }
 }

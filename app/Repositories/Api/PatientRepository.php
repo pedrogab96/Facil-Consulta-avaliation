@@ -19,8 +19,9 @@ class PatientRepository extends CrudRepository
     public function getPatientsByDoctor($id_medico): Collection
     {
         return $this->resourceType::query()
-            ->join('medico_paciente', 'pacientes.id', '=', 'medico_paciente.paciente_id')
-            ->where('medico_id', $id_medico)
+            ->whereHas('doctors', function ($query) use ($id_medico) {
+                $query->where('medico_id', $id_medico);
+            })
             ->get();
     }
 }
