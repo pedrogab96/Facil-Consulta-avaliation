@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class DoctorSeeder extends Seeder
 {
@@ -17,17 +18,13 @@ class DoctorSeeder extends Seeder
         $this->linkPatientsToDoctor($doctors);
     }
 
-    public function linkPatientsToDoctor($doctors)
+    public function linkPatientsToDoctor(Collection $doctors): void
     {
         $patients = Patient::all();
 
         $doctors->each(function ($doctor) use ($patients) {
             $doctor->patients()->attach(
-                $patients->random(rand(1, 3))->pluck('id')->toArray(),
-                [
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]
+                $patients->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
     }
