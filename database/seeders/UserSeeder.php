@@ -20,7 +20,5 @@ class UserSeeder extends Seeder
             'email' => 'pedrogab96@gmail.com',
             'password' => 'pedro@dev',
         ]);
-
-        User::factory()->count(4)->create();
     }
 }

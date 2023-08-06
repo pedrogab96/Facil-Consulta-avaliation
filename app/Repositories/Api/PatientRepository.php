@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Api;
 
-use App\Models\Paciente;
+use App\Models\Patient;
 use App\Repositories\Api\CrudRepository;
 
-class PacienteRepository extends CrudRepository
+class PatientRepository extends CrudRepository
 {
-    protected $resourceType = Paciente::class;
+    protected $resourceType = Patient::class;
 
     /**
      * Get patients by doctor.

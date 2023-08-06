@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use App\Http\Requests\Api\CrudFormRequest;
 
-class CidadeFormRequest extends CrudFormRequest
+class CityFormRequest extends CrudFormRequest
 {
     /**
      * Get the validation rules for creating the resource.

@@ -2,52 +2,52 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\CidadeResource;
-use App\Repositories\Api\CidadeRepository;
+use App\Http\Resources\CityResource;
+use App\Repositories\Api\CityRepository;
 use App\Http\Controllers\Api\CrudController;
-use App\Http\Requests\Api\CidadeFormRequest;
+use App\Http\Requests\Api\CityFormRequest;
 
-class CidadeController extends CrudController
+class CityController extends CrudController
 {
     /**
      * Get the repository instance.
      *
-     * @return CidadeRepository
+     * @return CityRepository
      */
     protected function getRepository()
     {
-        return app(CidadeRepository::class);
+        return app(CityRepository::class);
     }
 
     /**
      * Get the collection resource.
      *
      * @param $collections
-     * @return CidadeResource
+     * @return CityResource
      */
     public function collectionResource($collection)
     {
-        return CidadeResource::Collection($collection);
+        return CityResource::Collection($collection);
     }
 
     /**
      * Get the model resource.
      *
      * @param $model
-     * @return CidadeResource
+     * @return CityResource
      */
     protected function modelResource($model)
     {
-        return new CidadeResource($model);
+        return new CityResource($model);
     }
 
     /**
      * Get the form request instance.
      *
-     * @return CidadeFormRequest
+     * @return CityFormRequest
      */
     protected function formRequest()
     {
-        return app(CidadeFormRequest::class);
+        return app(CityFormRequest::class);
     }
 }

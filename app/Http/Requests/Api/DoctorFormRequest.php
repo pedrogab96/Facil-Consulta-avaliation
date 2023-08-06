@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use App\Http\Requests\Api\CrudFormRequest;
 
-class MedicoFormRequest extends CrudFormRequest
+class DoctorFormRequest extends CrudFormRequest
 {
     /**
      * Get the validation rules for creating the resource.

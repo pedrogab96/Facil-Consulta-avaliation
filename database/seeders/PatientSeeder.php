@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cidade;
+use App\Models\Patient;
 use Illuminate\Database\Seeder;
 
-class CidadeSeeder extends Seeder
+class PatientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Cidade::factory()->count(10)->create();
+        Patient::factory()->count(10)->create();
     }
 }

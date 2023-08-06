@@ -2,43 +2,43 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\PacienteResource;
+use App\Http\Resources\PatientResource;
 use App\Http\Controllers\Api\CrudController;
-use App\Repositories\Api\PacienteRepository;
-use App\Http\Requests\Api\PacienteFormRequest;
+use App\Repositories\Api\PatientRepository;
+use App\Http\Requests\Api\PatientFormRequest;
 
-class PacienteController extends CrudController
+class PatientController extends CrudController
 {
     /**
      * Get the repository instance.
      *
-     * @return PacienteRepository
+     * @return PatientRepository
      */
     protected function getRepository()
     {
-        return app(PacienteRepository::class);
+        return app(PatientRepository::class);
     }
 
     /**
      * Get the collection resource instance.
      *
      * @param  mixed  $collections
-     * @return PacienteResource
+     * @return PatientResource
      */
     public function collectionResource($collection)
     {
-        return PacienteResource::collection($collection);
+        return PatientResource::collection($collection);
     }
 
     /**
      * Get the model resource.
      *
      * @param $model
-     * @return PacienteResource
+     * @return PatientResource
      */
     protected function modelResource($model)
     {
-        return new PacienteResource($model);
+        return new PatientResource($model);
     }
 
     /**
@@ -48,7 +48,7 @@ class PacienteController extends CrudController
      */
     protected function formRequest()
     {
-        return app(PacienteFormRequest::class);
+        return app(PatientFormRequest::class);
     }
 
     /**

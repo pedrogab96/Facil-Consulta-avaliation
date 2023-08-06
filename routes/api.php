@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CidadeController;
-use App\Http\Controllers\Api\MedicoController;
-use App\Http\Controllers\Api\PacienteController;
-use App\Models\Paciente;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\PatientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,19 +19,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/cidades', [CidadeController::class, 'index']);
+Route::get('/cidades', [CityController::class, 'index']);
 
-Route::get('/medicos', [MedicoController::class, 'index']);
-Route::get('/cidades/{id_cidade}/medicos', [MedicoController::class, 'getDoctorsByCity']);
+Route::get('/medicos', [DoctorController::class, 'index']);
+
+Route::get('/cidades/{id_cidade}/medicos', [DoctorController::class, 'getDoctorsByCity']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
 
-    Route::post('/medicos', [MedicoController::class, 'create']);
+    Route::controller(PatientController::class)->prefix('pacientes')->group(function () {
+        Route::post('/', 'create');
+        Route::put('/{id}', 'update');
+    });
 
-    Route::post('/medicos/{id_medico}/pacientes', [MedicoController::class, 'linkPatientToDoctor']);
-    Route::get('/medicos/{id_medico}/pacientes', [PacienteController::class, 'getPatientsByDoctor']);
+    Route::controller(DoctorController::class)->prefix('medicos')->group(function () {
+        Route::post('/', 'create');
+        Route::post('/{id_medico}/pacientes', 'linkPatientToDoctor');
+    });
 
-    Route::put('/pacientes/{id}', [PacienteController::class, 'update']);
-    Route::post('/pacientes', [PacienteController::class, 'create']);
+    Route::get('medicos/{id_medico}/pacientes', [PatientController::class, 'getPatientsByDoctor']);
 });

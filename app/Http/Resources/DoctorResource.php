@@ -5,9 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CidadeResource extends JsonResource
+class DoctorResource extends JsonResource
 {
-    public static $wrap = null;
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +17,6 @@ class CidadeResource extends JsonResource
         return [
             'id' => $this->id,
             'nome' => $this->nome,
-            'estado' => $this->estado,
             'cidade_id' => $this->cidade_id,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),

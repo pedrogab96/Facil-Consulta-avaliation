@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Relations;
+namespace App\Models\Relations\BelongsToMany;
 
-use App\Models\Paciente;
+use App\Models\Patient;
 
-trait BelongsToManyPacientes
+trait BelongsToManyPatients
 {
     /**
      * Retrieves the patients associated with this object.
@@ -13,6 +13,6 @@ trait BelongsToManyPacientes
      */
     public function patients()
     {
-        return $this->belongsToMany(Paciente::class);
+        return $this->belongsToMany(Patient::class, 'medico_paciente', 'medico_id', 'paciente_id');
     }
 }

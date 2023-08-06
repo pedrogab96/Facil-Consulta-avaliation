@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PacienteFormRequest extends CrudFormRequest
+class PatientFormRequest extends CrudFormRequest
 {
     /**
      * Get the validation rules for creating the resource.

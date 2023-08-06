@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Paciente>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Doctor>
  */
-class PacienteFactory extends Factory
+class DoctorFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +19,8 @@ class PacienteFactory extends Factory
     {
         return [
             'nome' => $this->faker->name(),
-            'cpf' => $this->faker->numerify('###.###.###-##'),
-            'celular' => $this->faker->phoneNumber(),
+            'especialidade' => collect(['Dermatologia', 'Ginecologia', 'Oftalmologia', 'Pediatria'])->random(),
+            'cidade_id' => City::all()->random()->id,
         ];
     }
 }

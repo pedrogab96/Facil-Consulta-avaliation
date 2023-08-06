@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models\Relations;
+namespace App\Models\Relations\BelongsTo;
 
-use App\Models\Cidade;
+use App\Models\City;
 
-trait BelongsToCidade
+trait BelongsToCity
 {
     /**
      * Retrieves the medicos associated with this object.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
-    public function cidade()
+    public function city()
     {
-        return $this->belongsTo(Cidade::class);
+        return $this->belongsTo(City::class);
     }
 }

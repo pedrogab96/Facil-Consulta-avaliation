@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\Medico;
-use App\Models\Paciente;
+use App\Models\Doctor;
+use App\Models\Patient;
 use Illuminate\Database\Seeder;
 
-class MedicoSeeder extends Seeder
+class DoctorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $doctors = Medico::factory()->count(10)->create();
+        $doctors = Doctor::factory()->count(10)->create();
         $this->linkPatientsToDoctor($doctors);
     }
 
     public function linkPatientsToDoctor($doctors)
     {
-        $patients = Paciente::all();
+        $patients = Patient::all();
 
         $doctors->each(function ($doctor) use ($patients) {
             $doctor->patients()->attach(

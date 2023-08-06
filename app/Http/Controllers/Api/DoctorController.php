@@ -2,81 +2,82 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\MedicoResource;
-use App\Repositories\Api\MedicoRepository;
+use App\Http\Resources\DoctorResource;
+use App\Repositories\Api\DoctorRepository;
 use App\Http\Controllers\Api\CrudController;
-use App\Http\Requests\Api\MedicoFormRequest;
-use App\Http\Requests\Api\MedicoPacienteFormRequest;
-use App\Http\Resources\MedicoPacienteResource;
-use App\Http\Resources\MedicosResource;
+use App\Http\Requests\Api\DoctorFormRequest;
+use App\Http\Requests\Api\DoctorPatientFormRequest;
+use App\Http\Resources\DoctorPatientResource;
+use App\Http\Resources\DoctorsResource;
+use App\Http\Resources\PatientResource;
 
-class MedicoController extends CrudController
+class DoctorController extends CrudController
 {
     /**
      * Get the repository instance.
      *
-     * @return MedicoRepository
+     * @return DoctorRepository
      */
     protected function getRepository()
     {
-        return app(MedicoRepository::class);
+        return app(DoctorRepository::class);
     }
 
     /**
      * Get the collection resource.
      *
      * @param $collections
-     * @return MedicosResource
+     * @return DoctorsResource
      */
     public function collectionResource($collections)
     {
-        return MedicosResource::Collection($collections);
+        return DoctorsResource::Collection($collections);
     }
 
     /**
      * Get the model resource.
      *
      * @param $model
-     * @return MedicoResource
+     * @return DoctorResource
      */
     protected function modelResource($model)
     {
-        return new MedicoResource($model);
+        return new DoctorResource($model);
     }
 
     /**
      * Get the form request instance.
      *
-     * @return MedicoFormRequest
+     * @return DoctorFormRequest
      */
     protected function formRequest()
     {
-        return app(MedicoFormRequest::class);
+        return app(DoctorFormRequest::class);
     }
 
     /**
      * Get the doctors by city.
      *
      * @param $cidade_id
-     * @return MedicosResource
+     * @return DoctorsResource
      */
     public function getDoctorsByCity($cidade_id)
     {
         $doctors = $this->getRepository()->getDoctorsByCity($cidade_id);
 
-        return MedicosResource::Collection($doctors);
+        return DoctorsResource::Collection($doctors);
     }
 
     /**
      * Link a patient to a doctor.
      *
-     * @param MedicoPacienteFormRequest $request
-     * @return MedicoPacienteResource
+     * @param DoctorPatientFormRequest $request
+     * @return DoctorPatientResource
      */
-    public function linkPatientToDoctor(MedicoPacienteFormRequest $request)
+    public function linkPatientToDoctor(DoctorPatientFormRequest $request)
     {
         $pacientAndDoctors = $this->getRepository()->linkPatientToDoctor($request->validated());
 
-        return new MedicoPacienteResource($pacientAndDoctors);
+        return new DoctorPatientResource($pacientAndDoctors);
     }
 }
