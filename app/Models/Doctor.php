@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Relations\BelongsTo\BelongsToCity;
 use App\Models\Relations\BelongsToMany\BelongsToManyPatients;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Doctor extends Model
     use HasFactory;
     use SoftDeletes;
     use BelongsToManyPatients;
+    use BelongsToCity;
 
     protected $fillable = [
         'nome',
