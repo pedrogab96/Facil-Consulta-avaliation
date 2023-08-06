@@ -91,3 +91,16 @@ Após executar os comandos acima, serão criados dados para cada tabela e dois u
 - Usuário 2:
   - Email: pedrogab96@gmail.com
   - Senha: pedro@dev
+
+# Extras
+
+Para rodar os testes automatizados:
+
+```bash
+php artisan test
+```
+ou se estiver fora do container da aplicação:
+
+```bash
+./vendor/bin/sail php artisan test
+```
