@@ -12,6 +12,7 @@ PHP                           | 8.2
 Laravel                       | 10
 MySQL                         | 8.0
 Swagger                       | 3.0
+PHPUnit                       | 10.2
 
 ## Documentação da API
 A documentação da API foi criada utilizando o Swagger (OpenAPI) e pode ser acessada através da rota http://localhost/api/documentation após o servidor estar em execução.
