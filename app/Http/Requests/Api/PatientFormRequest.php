@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Rules\Cpf;
+use App\Rules\Phone;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PatientFormRequest extends CrudFormRequest
@@ -15,7 +17,7 @@ class PatientFormRequest extends CrudFormRequest
     {
         return [
            'nome' => ['required'],
-           'cpf' => ['required'],
+           'cpf' => ['required', 'unique:pacientes', new Cpf()],
            'celular' => ['required'],
         ];
     }
@@ -28,8 +30,8 @@ class PatientFormRequest extends CrudFormRequest
     protected function baseRules(): array
     {
         return [
-            'nome' => ['max:100', 'max:100'],
-            'cpf' => ['max:20'],
+            'nome' => ['max:100'],
+            'celular' => ['max:20', new Phone()],
         ];
     }
 }
