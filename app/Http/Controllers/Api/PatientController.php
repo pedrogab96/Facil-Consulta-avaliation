@@ -6,6 +6,9 @@ use App\Http\Resources\PatientResource;
 use App\Http\Controllers\Api\CrudController;
 use App\Repositories\Api\PatientRepository;
 use App\Http\Requests\Api\PatientFormRequest;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PatientController extends CrudController
 {
@@ -14,7 +17,7 @@ class PatientController extends CrudController
      *
      * @return PatientRepository
      */
-    protected function getRepository()
+    protected function getRepository(): PatientRepository
     {
         return app(PatientRepository::class);
     }
@@ -25,7 +28,7 @@ class PatientController extends CrudController
      * @param  mixed  $collections
      * @return PatientResource
      */
-    public function collectionResource($collection)
+    public function collectionResource(Collection $collection): AnonymousResourceCollection
     {
         return PatientResource::collection($collection);
     }
@@ -36,7 +39,7 @@ class PatientController extends CrudController
      * @param $model
      * @return PatientResource
      */
-    protected function modelResource($model)
+    protected function modelResource(Model $model): PatientResource
     {
         return new PatientResource($model);
     }
@@ -46,7 +49,7 @@ class PatientController extends CrudController
      *
      * @return MedicoFormRequest
      */
-    protected function formRequest()
+    protected function formRequest(): PatientFormRequest
     {
         return app(PatientFormRequest::class);
     }
@@ -57,8 +60,8 @@ class PatientController extends CrudController
      * @param  int  $id_medico
      * @return \App\Http\Resources\PacienteResource
      */
-    public function getPatientsByDoctor($id_medico)
+    public function getPatientsByDoctor(string $id_medico): AnonymousResourceCollection
     {
-        return $this->collectionResource($this->getRepository()->getPatientsByDoctor($id_medico));
+        return PatientResource::collection($this->getRepository()->getPatientsByDoctor($id_medico));
     }
 }

@@ -3,7 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Repositories\Api\CrudRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 abstract class CrudController extends Controller
 {
@@ -13,7 +20,7 @@ abstract class CrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return $this->collectionResource($this->getRepository()->index());
     }
@@ -24,7 +31,7 @@ abstract class CrudController extends Controller
      * @param  int  $id
      * @return mixed
      */
-    public function show($id)
+    public function show($id): JsonResource
     {
         return $this->modelResource($this->getRepository()->show($id));
     }
@@ -34,15 +41,20 @@ abstract class CrudController extends Controller
      *
      * @return mixed
      */
-    public function create()
+    public function create(): JsonResource | JsonResponse
     {
         $repository = $this->getRepository();
 
-        if ($resource = $repository->create($this->formRequest()->validated())) {
+        try {
+            $resource = $repository->create($this->formRequest()->validated());
             return $this->modelResource($resource);
-        }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-        return abort(500);
+            return response()->json([
+                'message' => 'Ops... Ocorreu um erro não esperado',
+            ], 500);
+        }
     }
 
     /**
@@ -51,17 +63,20 @@ abstract class CrudController extends Controller
      * @param  int  $id
      * @return mixed
      */
-    public function update($id)
+    public function update(string $id): JsonResource | JsonResponse
     {
         $repository = $this->getRepository();
 
-        $resource = $repository->find($id);
+        try {
+            $resource = $repository->find($id);
+            $resource = $repository->update($resource, $this->formRequest()->validated());
 
-        if ($resource = $repository->update($resource, $this->formRequest()->validated())) {
             return $this->modelResource($resource);
-        }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-        return abort(500);
+            return response()->json(['message' => 'Ops... Ocorreu um erro não esperado'], 500);
+        }
     }
 
     /**
@@ -69,7 +84,7 @@ abstract class CrudController extends Controller
      *
      * @return mixed
      */
-    abstract protected function getRepository();
+    abstract protected function getRepository(): CrudRepository;
 
 
     /**
@@ -78,7 +93,7 @@ abstract class CrudController extends Controller
      * @param  mixed  $model
      * @return mixed
      */
-    abstract protected function modelResource($model);
+    abstract protected function modelResource(Model $model): JsonResource;
 
     /**
      * Get the collection resource instance.
@@ -86,12 +101,12 @@ abstract class CrudController extends Controller
      * @param  mixed  $collections
      * @return mixed
      */
-    abstract protected function collectionResource($collections);
+    abstract protected function collectionResource(Collection $collections): AnonymousResourceCollection;
 
     /**
      * Get the form request instance.
      *
      * @return mixed
      */
-    abstract protected function formRequest();
+    abstract protected function formRequest(): FormRequest;
 }

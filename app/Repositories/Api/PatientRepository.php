@@ -4,6 +4,7 @@ namespace App\Repositories\Api;
 
 use App\Models\Patient;
 use App\Repositories\Api\CrudRepository;
+use Illuminate\Support\Collection;
 
 class PatientRepository extends CrudRepository
 {
@@ -15,7 +16,7 @@ class PatientRepository extends CrudRepository
      * @param int $id_medico
      * @return \Illuminate\Support\Collection
      */
-    public function getPatientsByDoctor($id_medico)
+    public function getPatientsByDoctor($id_medico): Collection
     {
         return $this->resourceType::query()
             ->join('medico_paciente', 'pacientes.id', '=', 'medico_paciente.paciente_id')

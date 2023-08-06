@@ -3,6 +3,7 @@
 namespace App\Models\Relations\BelongsTo;
 
 use App\Models\City;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait BelongsToCity
 {
@@ -11,7 +12,7 @@ trait BelongsToCity
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
-    public function city()
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }

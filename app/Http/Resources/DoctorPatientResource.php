@@ -12,7 +12,7 @@ class DoctorPatientResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $doctor = $this->resource->get('doctor');
         $patient = $this->resource->get('patient');

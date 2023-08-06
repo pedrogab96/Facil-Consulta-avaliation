@@ -2,6 +2,9 @@
 
 namespace App\Repositories\Api;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 abstract class CrudRepository
@@ -14,7 +17,7 @@ abstract class CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getInstance()
+    public function getInstance(): Model
     {
         if (!isset($this->resourceInstance)) {
             $this->resourceInstance = new ($this->resourceType);
@@ -28,7 +31,7 @@ abstract class CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function newQuery()
+    public function newQuery(): Builder
     {
         return $this->getInstance()->newQuery();
     }
@@ -38,7 +41,7 @@ abstract class CrudRepository
      *
      * @return \Illuminate\Support\Collection
      */
-    public function index()
+    public function index(): Collection
     {
         return $this->newQuery()->get();
     }
@@ -49,7 +52,7 @@ abstract class CrudRepository
      * @param int $id
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function find($id)
+    public function find($id): Model
     {
         return $this->newQuery()->findOrFail($id);
     }
@@ -60,7 +63,7 @@ abstract class CrudRepository
      * @param array $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create($attributes)
+    public function create($attributes): Model
     {
         return DB::transaction(function () use ($attributes) {
 
@@ -78,7 +81,7 @@ abstract class CrudRepository
      * @param array $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update($resouce, $attributes)
+    public function update($resouce, $attributes): Model
     {
         return DB::transaction(function () use ($resouce, $attributes) {
             $resouce->update($attributes);
@@ -96,7 +99,7 @@ abstract class CrudRepository
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function afterSave($resource, $attributes)
+    public function afterSave($resource, $attributes): Model
     {
         return $resource;
     }

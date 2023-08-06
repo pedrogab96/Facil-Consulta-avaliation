@@ -6,6 +6,9 @@ use App\Http\Resources\CityResource;
 use App\Repositories\Api\CityRepository;
 use App\Http\Controllers\Api\CrudController;
 use App\Http\Requests\Api\CityFormRequest;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CityController extends CrudController
 {
@@ -14,7 +17,7 @@ class CityController extends CrudController
      *
      * @return CityRepository
      */
-    protected function getRepository()
+    protected function getRepository(): CityRepository
     {
         return app(CityRepository::class);
     }
@@ -23,9 +26,9 @@ class CityController extends CrudController
      * Get the collection resource.
      *
      * @param $collections
-     * @return CityResource
+     * @return AnonymousResourceCollection
      */
-    public function collectionResource($collection)
+    public function collectionResource(Collection $collection): AnonymousResourceCollection
     {
         return CityResource::Collection($collection);
     }
@@ -36,7 +39,7 @@ class CityController extends CrudController
      * @param $model
      * @return CityResource
      */
-    protected function modelResource($model)
+    protected function modelResource(Model $model): CityResource
     {
         return new CityResource($model);
     }
@@ -46,7 +49,7 @@ class CityController extends CrudController
      *
      * @return CityFormRequest
      */
-    protected function formRequest()
+    protected function formRequest(): CityFormRequest
     {
         return app(CityFormRequest::class);
     }

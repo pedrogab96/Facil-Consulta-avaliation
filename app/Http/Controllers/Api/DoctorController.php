@@ -9,7 +9,10 @@ use App\Http\Requests\Api\DoctorFormRequest;
 use App\Http\Requests\Api\DoctorPatientFormRequest;
 use App\Http\Resources\DoctorPatientResource;
 use App\Http\Resources\DoctorsResource;
-use App\Http\Resources\PatientResource;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DoctorController extends CrudController
 {
@@ -18,7 +21,7 @@ class DoctorController extends CrudController
      *
      * @return DoctorRepository
      */
-    protected function getRepository()
+    protected function getRepository(): DoctorRepository
     {
         return app(DoctorRepository::class);
     }
@@ -27,9 +30,9 @@ class DoctorController extends CrudController
      * Get the collection resource.
      *
      * @param $collections
-     * @return DoctorsResource
+     * @return AnonymousResourceCollection
      */
-    public function collectionResource($collections)
+    public function collectionResource(Collection $collections): AnonymousResourceCollection
     {
         return DoctorsResource::Collection($collections);
     }
@@ -40,7 +43,7 @@ class DoctorController extends CrudController
      * @param $model
      * @return DoctorResource
      */
-    protected function modelResource($model)
+    protected function modelResource(Model $model): DoctorResource
     {
         return new DoctorResource($model);
     }
@@ -50,7 +53,7 @@ class DoctorController extends CrudController
      *
      * @return DoctorFormRequest
      */
-    protected function formRequest()
+    protected function formRequest(): DoctorFormRequest
     {
         return app(DoctorFormRequest::class);
     }
@@ -59,9 +62,9 @@ class DoctorController extends CrudController
      * Get the doctors by city.
      *
      * @param $cidade_id
-     * @return DoctorsResource
+     * @return AnonymousResourceCollection
      */
-    public function getDoctorsByCity($cidade_id)
+    public function getDoctorsByCity(string $cidade_id): AnonymousResourceCollection
     {
         $doctors = $this->getRepository()->getDoctorsByCity($cidade_id);
 
@@ -74,7 +77,7 @@ class DoctorController extends CrudController
      * @param DoctorPatientFormRequest $request
      * @return DoctorPatientResource
      */
-    public function linkPatientToDoctor(DoctorPatientFormRequest $request)
+    public function linkPatientToDoctor(DoctorPatientFormRequest $request): DoctorPatientResource
     {
         $pacientAndDoctors = $this->getRepository()->linkPatientToDoctor($request->validated());
 
