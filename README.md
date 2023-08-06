@@ -77,6 +77,12 @@ composer install
 php artisan key:generate
 ```
 
+5. Gere a JWT_SECRET:
+
+```bash
+php artisan jwt:secret
+```
+
 5. Gere as tabelas com as migrations, seeders e factories:
 
 ```bash
