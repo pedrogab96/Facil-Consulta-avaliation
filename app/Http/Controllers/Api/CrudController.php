@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 abstract class CrudController extends Controller
 {
@@ -48,6 +49,11 @@ abstract class CrudController extends Controller
         try {
             $resource = $repository->create($this->formRequest()->validated());
             return $this->modelResource($resource);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
@@ -66,16 +72,21 @@ abstract class CrudController extends Controller
     public function update(string $id): JsonResource | JsonResponse
     {
         $repository = $this->getRepository();
+        $resource = $repository->find($id);
 
         try {
-            $resource = $repository->find($id);
-            $resource = $repository->update($resource, $this->formRequest()->validated());
-
-            return $this->modelResource($resource);
+            $updatedResource = $repository->update($resource, $this->formRequest()->validated());
+            return $this->modelResource($updatedResource);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-
-            return response()->json(['message' => 'Ops... Ocorreu um erro não esperado'], 500);
+            return response()->json([
+                'message' => 'Ops... Ocorreu um erro não esperado',
+            ], 500);
         }
     }
 

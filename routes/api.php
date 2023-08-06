@@ -30,7 +30,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::controller(PatientController::class)->prefix('pacientes')->group(function () {
         Route::post('/', 'create');
-        Route::put('/{id}', 'update');
+        Route::put('/{id_paciente}', 'update');
     });
 
     Route::controller(DoctorController::class)->prefix('medicos')->group(function () {
