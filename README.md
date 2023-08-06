@@ -1,4 +1,4 @@
-# Getting Started: Facil Consulta Avaliação
+# Facil Consulta Avaliação
 
 ## Sobre
 
