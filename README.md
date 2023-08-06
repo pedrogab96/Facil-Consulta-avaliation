@@ -83,7 +83,7 @@ php artisan key:generate
 php artisan jwt:secret
 ```
 
-5. Gere as tabelas com as migrations, seeders e factories:
+6. Gere as tabelas com as migrations, seeders e factories:
 
 ```bash
 php artisan migrate --seed
