@@ -31,7 +31,7 @@ git clone https://github.com/pedrogab96/facil-consulta-avaliation.git
 2. Acesse a pasta do projeto:
 
 ```bash
-cd facil-consulta-avaliation
+cd facil-consulta-avaliacao
 ```
 
 3. Crie o arquivo .env:
